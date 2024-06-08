@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://unpkg.com/vue"></script>
-    <script src="js/main.js"></script>
-    <script src=""></script>
     <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Подключение Vue.js локально -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 
 <body>
@@ -16,47 +15,51 @@
         <h1>Welcome</h1>
     </header>
     <section>
-        <div id="field">
+        <div id="app">
+            <div class="score">
+                <h1 class="player-x">x :</h1>
+                <h1 class="player-o">o :</h1>
+            </div>
             <div class="A">
-                <button class="1">
-                    <img src="img/O.png" alt="">
+                <button @click="changeButtonImage(0)" @mouseover="mouseHover(0)" @mouseleave="mouseLeave(0)" class="1">
+                    <img :src="allImage[0]" alt="">
                 </button>
-                <button class="2">
-                    <img src="img/X.png" alt="">
+                <button @click="changeButtonImage(1)" @mouseover="mouseHover(1)" @mouseleave="mouseLeave(1)" class="2">
+                    <img :src="allImage[1]" alt="">
                 </button>
-                <button class="3">
-                    <img src="img/X.png" alt="">
+                <button @click="changeButtonImage(2)" @mouseover="mouseHover(2)" @mouseleave="mouseLeave(2)" class="2">
+                    <img :src="allImage[2]" alt="">
                 </button>
             </div>
             <div class="B">
-                <button class="1">
-                    <img src="img/X.png" alt="">
+                <button @click="changeButtonImage(3)" @mouseover="mouseHover(3)" @mouseleave="mouseLeave(3)" class="1">
+                    <img :src="allImage[3]" alt="">
                 </button>
-                <button class="2">
-                    <img src="img/O.png" alt="">
+                <button @click="changeButtonImage(4)" @mouseover="mouseHover(4)" @mouseleave="mouseLeave(4)" class="2">
+                    <img :src="allImage[4]" alt="">
                 </button>
-                <button class="3">
-                    <img src="img/X.png" alt="">
-                </button>
-            </div>
-            <div class="c">
-                <button class="1">
-                    <img src="img/X.png" alt="">
-                </button>
-                <button class="2">
-                    <img src="img/X.png" alt="">
-                </button>
-                <button class="3">
-                    <img src="img/O.png" alt="">
+                <button @click="changeButtonImage(5)" @mouseover="mouseHover(5)" @mouseleave="mouseLeave(5)" class="2">
+                    <img :src="allImage[5]" alt="">
                 </button>
             </div>
+            <div class="C">
+                <button @click="changeButtonImage(6)" @mouseover="mouseHover(6)" @mouseleave="mouseLeave(6)" class="1">
+                    <img :src="allImage[6]" alt="">
+                </button>
+                <button @click="changeButtonImage(7)" @mouseover="mouseHover(7)" @mouseleave="mouseLeave(7)" class="2">
+                    <img :src="allImage[7]" alt="">
+                </button>
+                <button @click="changeButtonImage(8)" @mouseover="mouseHover(8)" @mouseleave="mouseLeave(8)" class="2">
+                    <img :src="allImage[8]" alt="">
+                </button>
+            </div>
+            <button @click="clearField()" class="clear-field">
+                <img src="/img/restart.png" alt="">
+            </button>
         </div>
-
     </section>
-    <footer>
-
-    </footer>
-
+    <footer></footer>
 </body>
+<script src="js/main.js"></script>
 
 </html>

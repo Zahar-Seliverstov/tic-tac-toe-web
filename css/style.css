@@ -1,68 +1,101 @@
 @font-face {
     font-family: 'Silkscreen[Rus by Mr.Enot]';
-    /* Название шрифта */
-    src: url('myFonts/Silkscreen\ [RUS\ by\ Mr.Enot].ttf') format('truetype');
-    /* Формат TrueType */
+    src: url('fonts/Silkscreen\ [RUS\ by\ Mr.Enot].ttf') format('truetype');
     font-weight: normal;
-    /* Можно указать различные веса */
     font-style: normal;
-    /* Можно указать различные стили */
 }
-
-
 
 header {
     color: rgb(136, 76, 136);
     font-family: 'Silkscreen[Rus by Mr.Enot]', sans-serif;
     text-align: center;
-    margin: 0;
+    margin-bottom: 100px;
     padding: 0;
 
 }
 
 body {
-    
+    font-family: 'Silkscreen[Rus by Mr.Enot]', sans-serif;
     background-color: black;
-    background-image:
-        radial-gradient( rgba(0, 0, 0, 0.532)),
-        url('https://avatars.mds.yandex.net/i?id=f601a208cc2b678588c6ae204bb58afb_l-3609173-images-thumbs&ref=rim&n=13&w=1080&h=1080');
     background-size: cover;
 }
 
-section>#field>* {
+#app>.score {
+    border-radius: 5px;
+    margin: auto;
+    background-color: rgb(19, 18, 19);
+    width: 222px;
+}
+
+#app>.score>.player-x {
+    font-size: 20px;
+    margin: 12px 0 0 0;
+    height: 40px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(207, 42, 42);
+}
+
+#app>.score>.player-o {
+    margin: 12px 0 0 0;
+    height: 40px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(16, 112, 196);
+}
+
+section>#app>* {
     flex-direction: row;
     display: flex;
     justify-content: center;
-    margin: 0;
+    margin: 6px;
     padding: 0;
-    width: 100%;
 }
 
-section>#field>*>* {
+section>#app>*>* {
     background-color: rgba(43, 42, 42, 0.352);
     border: 0px;
     border-radius: 10px;
-    height: 80px;
-    width: 80px;
-    margin: 2px;
+    height: 70px;
+    width: 70px;
+    margin-left: 3px;
+    margin-right: 3px;
     padding: 0;
 
 
 }
 
-section>#field>*>*:hover {
+section>#app>*>*:hover {
     background-color: rgba(30, 29, 29, 0.352);
 }
 
-section>#field>*>*:active {
-
+section>#app>*>*:active {
     background-color: rgba(14, 13, 13, 0.352);
 }
 
-section>#field>*>*>img {
-    display: flexbox;
+img {
     padding: 0;
     margin: 0;
+    height: 45px;
+    width: 45px;
+}
+
+section>#app>.clear-field>img {
+    margin: auto;
+    height: 40px;
+    width: 40px;
+
+}
+
+section>#app>.clear-field {
+    background-color: rgba(58, 58, 58, 0.664);
+    border: 0px;
+    border-radius: 10px;
     height: 50px;
     width: 50px;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+
+
 }
