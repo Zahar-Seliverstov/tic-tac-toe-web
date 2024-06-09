@@ -11,7 +11,11 @@ const app = Vue.createApp({
             animationTextureSwitch: true,
             animationСounter: 5,
             winAnimationInterval: null,
-            speedAnimation: 200
+            speedAnimation: 200,
+            animationIsPlaying: false,
+            clickSound: new Audio('/sounds/choice.wav'),
+            winSound: new Audio('sounds/win.wav'),
+            clearSound: new Audio('sounds/clear.wav')
         };
     },
     methods: {
@@ -31,44 +35,45 @@ const app = Vue.createApp({
             this.animationСounter -= 1;
 
             if (this.animationСounter <= 0) {
+                this.animationIsPlaying = false;
                 clearInterval(this.winAnimationInterval);
                 this.clearField();
             }
 
         },
         mouseHover(index) {
-            console.log("lox");
-            if (this.backField[index] == '') {
-                if (this.playerMotion) {
-                    this.allImage[index] = '/img/crossDark.png'
-                }
-                else {
-                    this.allImage[index] = '/img/nilDark.png'
-                }
+            if (this.backField[index] == '' && !this.animationIsPlaying) {
+                this.allImage[index] = this.playerMotion ? '/img/crossDark.png' : '/img/nilDark.png';
             }
         },
         mouseLeave(index) {
-            if (this.backField[index] == '') {
+            if (this.backField[index] == '' && !this.animationIsPlaying) {
                 this.allImage[index] = this.emptyImage;
             }
         },
-        clearField() {
-            this.playerMotion = true;
-            this.allImage = [];
-            for (let index = 0; index < 9; index++) {
-                this.allImage.push(this.emptyImage);
+        clearField(treker = false) {
+            if (!this.animationIsPlaying) {
+                if(treker){
+                    this.clearSound.play()
+                }
+                this.playerMotion = true;
+                this.allImage = [];
+                for (let index = 0; index < 9; index++) {
+                    this.allImage.push(this.emptyImage);
+                }
+                this.backField =
+                    [
+                        '', '', '',
+                        '', '', '',
+                        '', '', ''
+                    ]
+                this.movements = [];
+                this.animationСounter = 5;
+                this.winAnimationInterval = null;
             }
-            this.backField =
-                [
-                    '', '', '',
-                    '', '', '',
-                    '', '', ''
-                ]
-            this.movements = [];
-            this.animationСounter = 5;
-            this.winAnimationInterval = null;
         },
         win() {
+            this.winSound.play();
             this.winAnimationInterval = setInterval(() => {
                 this.winAnimated();
             }, this.speedAnimation);
@@ -98,21 +103,25 @@ const app = Vue.createApp({
                 (this.backField[2] !== '' && this.backField[2] === this.backField[5] && this.backField[5] === this.backField[8]) ||
                 (this.backField[6] !== '' && this.backField[6] === this.backField[7] && this.backField[7] === this.backField[8]) ||
                 (this.backField[2] !== '' && this.backField[2] === this.backField[4] && this.backField[4] === this.backField[6])) {
+                this.animationIsPlaying = true;
                 this.win();
             }
         },
         changeButtonImage(index) {
-            if (this.backField[index] == '') {
-                if (this.playerMotion) {
-                    this.allImage[index] = this.nil;
-                    this.backField[index] = 'o'
+            if (!this.animationIsPlaying) {
+                this.clickSound.play();
+                if (this.backField[index] == '') {
+                    if (this.playerMotion) {
+                        this.allImage[index] = this.nil;
+                        this.backField[index] = 'o'
+                    }
+                    else {
+                        this.allImage[index] = this.cross;
+                        this.backField[index] = 'x'
+                    }
+                    this.playerMotion = !this.playerMotion;
+                    this.checkFieldStatus(index);
                 }
-                else {
-                    this.allImage[index] = this.cross;
-                    this.backField[index] = 'x'
-                }
-                this.playerMotion = !this.playerMotion;
-                this.checkFieldStatus(index);
             }
         }
     },

@@ -1,101 +1,91 @@
 @font-face {
     font-family: 'Silkscreen[Rus by Mr.Enot]';
-    src: url('fonts/Silkscreen\ [RUS\ by\ Mr.Enot].ttf') format('truetype');
+    src: url('fonts/Silkscreen[RUS by Mr.Enot].ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
-header {
-    color: rgb(136, 76, 136);
-    font-family: 'Silkscreen[Rus by Mr.Enot]', sans-serif;
-    text-align: center;
-    margin-bottom: 100px;
-    padding: 0;
-
-}
-
 body {
     font-family: 'Silkscreen[Rus by Mr.Enot]', sans-serif;
-    background-color: black;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+header {
+    font-family: 'Silkscreen[Rus by Mr.Enot]', sans-serif;
+    color: rgb(136, 76, 136);
+    text-align: center;
+    margin-bottom: 0;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 70px);
+    grid-template-rows: repeat(3, 70px);
+    gap: 6px;
+    background-image: url('/img/field.png');
     background-size: cover;
+    padding: 1x;
+    border-radius: 10px;
 }
 
-#app>.score {
-    border-radius: 5px;
-    margin: auto;
-    background-color: rgb(19, 18, 19);
-    width: 222px;
-}
-
-#app>.score>.player-x {
-    font-size: 20px;
-    margin: 12px 0 0 0;
-    height: 40px;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0);
-    color: rgb(207, 42, 42);
-}
-
-#app>.score>.player-o {
-    margin: 12px 0 0 0;
-    height: 40px;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0);
-    color: rgb(16, 112, 196);
-}
-
-section>#app>* {
-    flex-direction: row;
+.cell {
     display: flex;
     justify-content: center;
-    margin: 6px;
-    padding: 0;
-}
-
-section>#app>*>* {
-    background-color: rgba(43, 42, 42, 0.352);
-    border: 0px;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.352);
+    border: none;
     border-radius: 10px;
     height: 70px;
     width: 70px;
-    margin-left: 3px;
-    margin-right: 3px;
+    cursor: pointer;
     padding: 0;
-
-
+    margin: 0;
 }
 
-section>#app>*>*:hover {
+/*.cell:hover {
     background-color: rgba(30, 29, 29, 0.352);
 }
 
-section>#app>*>*:active {
+.cell:active {
     background-color: rgba(14, 13, 13, 0.352);
 }
-
+*/
 img {
-    padding: 0;
-    margin: 0;
     height: 45px;
     width: 45px;
 }
 
-section>#app>.clear-field>img {
+.clear-field {
+    background-color: rgba(26, 25, 25, 0.664);
+    border: none;
+    border-radius: 10px;
+    height: 60px;
+    width: 60px;
     margin: auto;
-    height: 40px;
-    width: 40px;
-
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
-section>#app>.clear-field {
-    background-color: rgba(58, 58, 58, 0.664);
-    border: 0px;
-    border-radius: 10px;
-    height: 50px;
-    width: 50px;
-    margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
+.clear-field:hover {
+    background-color: rgba(19, 19, 19, 0.404);
+}
 
-
+.clear-field img {
+    height: 35px;
+    width: 35px;
 }
