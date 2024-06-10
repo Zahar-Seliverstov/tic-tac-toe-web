@@ -1,6 +1,7 @@
 const app = Vue.createApp({
     data() {
         return {
+            gameModeText: "P",
             playerMotion: true,
             emptyImage: '/img/empty.png',
             cross: '/img/nil.png',
@@ -15,7 +16,8 @@ const app = Vue.createApp({
             animationIsPlaying: false,
             clickSound: new Audio('/sounds/choice.wav'),
             winSound: new Audio('sounds/win.wav'),
-            clearSound: new Audio('sounds/clear.wav')
+            clearSound: new Audio('sounds/clear.wav'),
+            botEnabel: true
         };
     },
     methods: {
@@ -53,7 +55,7 @@ const app = Vue.createApp({
         },
         clearField(treker = false) {
             if (!this.animationIsPlaying) {
-                if(treker){
+                if (treker) {
                     this.clearSound.play()
                 }
                 this.playerMotion = true;
@@ -121,8 +123,40 @@ const app = Vue.createApp({
                     }
                     this.playerMotion = !this.playerMotion;
                     this.checkFieldStatus(index);
+                    if (this.botEnabel) {
+                        this.botMove();
+                    }
                 }
             }
+        },
+        botMove() {
+            if (!this.animationIsPlaying) {
+                max = 9;
+                min = 0;
+                randomMove = Math.floor(Math.random() * (max - min + 1)) + min;
+
+                while (this.backField[randomMove] != '') {
+                    randomMove = Math.floor(Math.random() * (max - min + 1)) + min;
+
+                }
+                this.clickSound.play();
+                if (this.backField[randomMove] == '') {
+                    if (this.playerMotion) {
+                        this.allImage[randomMove] = this.nil;
+                        this.backField[randomMove] = 'o'
+                    }
+                    else {
+                        this.allImage[randomMove] = this.cross;
+                        this.backField[randomMove] = 'x'
+                    }
+                    this.playerMotion = !this.playerMotion;
+                    this.checkFieldStatus(randomMove);
+                }
+            }
+        },
+        setGameMode() {
+            this.botEnabel = !this.botEnabel;
+            this.gameModeText = this.botEnabel ? "B" : "P"
         }
     },
     created() {
