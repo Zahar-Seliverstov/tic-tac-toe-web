@@ -4,8 +4,8 @@ const app = Vue.createApp({
             gameModeText: "P",
             playerMotion: true,
             emptyImage: '/img/empty.png',
-            cross: '/img/nil.png',
-            nil: '/img/cross.png',
+            cross: '/img/cross.png',
+            nil: '/img/nil.png',
             allImage: [],
             backField: [],
             movements: [],
@@ -17,7 +17,8 @@ const app = Vue.createApp({
             clickSound: new Audio('/sounds/choice.wav'),
             winSound: new Audio('sounds/win.wav'),
             clearSound: new Audio('sounds/clear.wav'),
-            botEnabel: true
+            botEnabel: false,
+            possibleMoves: []
         };
     },
     methods: {
@@ -44,12 +45,12 @@ const app = Vue.createApp({
 
         },
         mouseHover(index) {
-            if (this.backField[index] == '' && !this.animationIsPlaying) {
+            if (this.backField[index] == ' ' && !this.animationIsPlaying) {
                 this.allImage[index] = this.playerMotion ? '/img/crossDark.png' : '/img/nilDark.png';
             }
         },
         mouseLeave(index) {
-            if (this.backField[index] == '' && !this.animationIsPlaying) {
+            if (this.backField[index] == ' ' && !this.animationIsPlaying) {
                 this.allImage[index] = this.emptyImage;
             }
         },
@@ -65,9 +66,9 @@ const app = Vue.createApp({
                 }
                 this.backField =
                     [
-                        '', '', '',
-                        '', '', '',
-                        '', '', ''
+                        ' ', ' ', ' ',
+                        ' ', ' ', ' ',
+                        ' ', ' ', ' '
                     ]
                 this.movements = [];
                 this.animationСounter = 5;
@@ -86,7 +87,7 @@ const app = Vue.createApp({
 
             if (this.movements.length == 7) {
                 this.allImage[this.movements[0]] = this.emptyImage;
-                this.backField[this.movements[0]] = '';
+                this.backField[this.movements[0]] = ' ';
                 this.movements.shift();
             }
             if (this.movements.length >= 6) {
@@ -97,29 +98,29 @@ const app = Vue.createApp({
                     this.allImage[this.movements[0]] = '/img/nilDark.png';
                 }
             }
-            if ((this.backField[0] !== '' && this.backField[0] === this.backField[1] && this.backField[1] === this.backField[2]) ||
-                (this.backField[0] !== '' && this.backField[0] === this.backField[3] && this.backField[3] === this.backField[6]) ||
-                (this.backField[0] !== '' && this.backField[0] === this.backField[4] && this.backField[4] === this.backField[8]) ||
-                (this.backField[3] !== '' && this.backField[3] === this.backField[4] && this.backField[4] === this.backField[5]) ||
-                (this.backField[1] !== '' && this.backField[1] === this.backField[4] && this.backField[4] === this.backField[7]) ||
-                (this.backField[2] !== '' && this.backField[2] === this.backField[5] && this.backField[5] === this.backField[8]) ||
-                (this.backField[6] !== '' && this.backField[6] === this.backField[7] && this.backField[7] === this.backField[8]) ||
-                (this.backField[2] !== '' && this.backField[2] === this.backField[4] && this.backField[4] === this.backField[6])) {
+            if ((this.backField[0] !== ' ' && this.backField[0] === this.backField[1] && this.backField[1] === this.backField[2]) ||
+                (this.backField[0] !== ' ' && this.backField[0] === this.backField[3] && this.backField[3] === this.backField[6]) ||
+                (this.backField[0] !== ' ' && this.backField[0] === this.backField[4] && this.backField[4] === this.backField[8]) ||
+                (this.backField[3] !== ' ' && this.backField[3] === this.backField[4] && this.backField[4] === this.backField[5]) ||
+                (this.backField[1] !== ' ' && this.backField[1] === this.backField[4] && this.backField[4] === this.backField[7]) ||
+                (this.backField[2] !== ' ' && this.backField[2] === this.backField[5] && this.backField[5] === this.backField[8]) ||
+                (this.backField[6] !== ' ' && this.backField[6] === this.backField[7] && this.backField[7] === this.backField[8]) ||
+                (this.backField[2] !== ' ' && this.backField[2] === this.backField[4] && this.backField[4] === this.backField[6])) {
                 this.animationIsPlaying = true;
                 this.win();
             }
         },
         changeButtonImage(index) {
             if (!this.animationIsPlaying) {
-                this.clickSound.play();
-                if (this.backField[index] == '') {
+                if (this.backField[index] == ' ') {
+                    this.clickSound.play();
                     if (this.playerMotion) {
-                        this.allImage[index] = this.nil;
-                        this.backField[index] = 'o'
-                    }
-                    else {
                         this.allImage[index] = this.cross;
                         this.backField[index] = 'x'
+                    }
+                    else {
+                        this.allImage[index] = this.nil;
+                        this.backField[index] = 'o'
                     }
                     this.playerMotion = !this.playerMotion;
                     this.checkFieldStatus(index);
@@ -130,36 +131,78 @@ const app = Vue.createApp({
             }
         },
         botMove() {
+
             if (!this.animationIsPlaying) {
                 max = 9;
                 min = 0;
                 randomMove = Math.floor(Math.random() * (max - min + 1)) + min;
 
-                while (this.backField[randomMove] != '') {
+                while (this.backField[randomMove] != ' ') {
                     randomMove = Math.floor(Math.random() * (max - min + 1)) + min;
-
                 }
-                this.clickSound.play();
-                if (this.backField[randomMove] == '') {
-                    if (this.playerMotion) {
-                        this.allImage[randomMove] = this.nil;
-                        this.backField[randomMove] = 'o'
+
+
+                for (let index = 0; index < this.possibleMoves.length; index++) {
+                    possibleField = "";
+                    currentField = ""
+
+                    for (let i = 0; i < 9; i++) {
+                        currentField += this.backField[i];
+                        possibleField += this.possibleMoves[index][i];
                     }
-                    else {
+                    console.log("1 - " + currentField);
+                    console.log("2 - " + possibleField);
+
+                    if (possibleField == currentField) {
+                        randomMove = parseInt(this.possibleMoves[index][9], 10);
+                        console.log(randomMove);
+                        break;
+                    }
+                }
+                if (this.backField[randomMove] == ' ') {
+                    if (this.playerMotion) {
                         this.allImage[randomMove] = this.cross;
                         this.backField[randomMove] = 'x'
                     }
+                    else {
+                        this.allImage[randomMove] = this.nil;
+                        this.backField[randomMove] = 'o'
+                    }
                     this.playerMotion = !this.playerMotion;
+                    this.clickSound.play();
                     this.checkFieldStatus(randomMove);
                 }
+
             }
         },
         setGameMode() {
             this.botEnabel = !this.botEnabel;
             this.gameModeText = this.botEnabel ? "B" : "P"
+        },
+        async loadFile() {
+            try {
+                const response = await fetch('data.txt');
+                if (response.ok) {
+                    const fileContent = await response.text();
+                    //console.log(fileContent + ")))))");
+                    this.possibleMoves = fileContent.split('\n');
+                    for (let index = 0; index < this.possibleMoves.length; index++) {
+                        console.log(this.possibleMoves[index]);
+                    }
+                } else {
+                    console.error('Error loading file:', response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching file:', error);
+            }
         }
     },
     created() {
+        this.loadFile();
+        //console.log(this.possibleMoves[0])
+        //for (let index = 0; index < this.possibleMoves.length; index++) {
+        //    console.log(this.possibleMoves[index])
+        //}
         this.clearField();
     }
 });
